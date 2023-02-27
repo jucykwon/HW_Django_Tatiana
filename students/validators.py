@@ -26,7 +26,6 @@ class ValidateEmailDomains:
         if domain not in self.domains:
             raise ValidationError(f'Emails domain "{domain}" is invalid.')
 
-
 # def validate_unique_email(value):
 #    student_email = value
 #    if student_email in student_email:
