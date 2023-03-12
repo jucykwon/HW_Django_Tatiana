@@ -3,8 +3,9 @@ import datetime
 from django.core.validators import MinLengthValidator
 from django.db import models
 from faker import Faker
+from phone_field import PhoneField
 
-from students.validators import validate_email_domain, ValidateEmailDomains, validate_unique_email
+from students.validators import ValidateEmailDomains, validate_unique_email
 
 VALID_DOMAINS = ('gmail.com', 'yahoo.com', 'hotmail.com')
 
@@ -17,6 +18,7 @@ class Student(models.Model):
     birthday = models.DateField(default=datetime.date.today())
     city = models.CharField(max_length=30, null=True, blank=True)
     email = models.EmailField(validators=[ValidateEmailDomains(*VALID_DOMAINS), validate_unique_email])
+    phone = models.CharField(max_length=20, default=None)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -37,4 +39,5 @@ class Student(models.Model):
             s.birthday = f.date_between(start_date='-65y', end_date='-18y')
             s.age = f.random_int(min=18, max=65)
             s.city = f.city()
+            s.phone = f.cell_phone_in_e164()
             s.save()
