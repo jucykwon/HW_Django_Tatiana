@@ -13,28 +13,19 @@ def validate_email_domain(value):
         raise ValidationError(f'Emails domain "{domain}" is not correct.')
 
 
-@deconstructible
-class ValidateEmailDomains:
-    def __init__(self, *domains):
-        if domains:
-            self.domains = tuple(domains)
-        else:
-            self.domains = DOMAINS
+# @deconstructible
+# class ValidateEmailDomains:
+#     def __init__(self, *domains):
+#         if domains:
+#             self.domains = tuple(domains)
+#         else:
+#             self.domains = DOMAINS
+#
+#     def __call__(self, *args, **kwargs):
+#         domain = args[0].split('@')[-1]
+#         if domain not in self.domains:
+#             raise ValidationError(f'Emails domain "{domain}" is invalid.')
 
-    def __call__(self, *args, **kwargs):
-        domain = args[0].split('@')[-1]
-        if domain not in self.domains:
-            raise ValidationError(f'Emails domain "{domain}" is invalid.')
-
-# def validate_unique_email(value):
-#    student_email = value
-#    if student_email in student_email:
-#        raise ValidationError(f'User with "{student_emails}" already exists.')
-
-# def validate_unique_email(self):
-#    email = self.cleaned_data.get["email"]
-#    if not User.objects.filter(email=email).exists():
-#        raise ValidationError(f'User with "{email}" already exists.')
 
 def validate_unique_email(email):
     conn = sqlite3.connect('db.sqlite3')

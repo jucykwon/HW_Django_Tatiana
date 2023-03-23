@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LMS - {{ title }}</title>
+</head>
+<body>
+   <form method="get">
+       <label for="group_name">Group name:</label><br>
+       <input type="text" id="group_name" name="group_name"><br><br>
+       <label for="start_date">Start date:</label><br>
+       <input type="date" id="start_date" name="start_date"
+              value="2023-01-01"
+       min="2023-01-01" max="2100-12-31">><br><br>
+       <input type="submit" value="Submit">
+      <a href="/groups/"> Back to list</a>
+   </form>
+   <br>
+   <a href="/groups/create/"> Create group</a>
+   <br><br>
+   <table>
+       <thead>
+             <tr>
+                 <th>Group Name</th>
+                 <th>Start date</th>
+                 <th>Group description</th>
+                 <th>Update</th>
+             </tr>
+       <thead>
+       <tbody>
+            {%  for st in groups %}
+                 <tr>
+                   <td><a href="/groups/detail/{{ st.pk }}"/>{{st.group_name}}</td>
+                   <td>{{st.start_date}}</td>
+                   <td>{{st.group_description}}</td>
+                   <td><a href="/groups/update/{{ st.pk }}/">Edit</a></td>
+                 </tr>
+            {%  endfor %}
+       </tbody>
+   </table>
+</body>
+</html>
