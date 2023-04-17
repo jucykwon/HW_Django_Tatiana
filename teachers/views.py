@@ -2,7 +2,8 @@ from django.db.models import Q
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.middleware.csrf import get_token
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+from django.urls import reverse
 from webargs.fields import Str
 from webargs.djangoparser import use_args
 
@@ -35,7 +36,7 @@ def get_teachers(request, args):
 
 
 def detail_teacher(request, pk):
-    teacher = Teacher.objects.get(pk=pk)
+    teacher = get_object_or_404(Teacher, pk=pk)
     return render(request, 'teachers/detail.html', {'title': 'Detail of teacher', 'teacher': teacher})
 
 
@@ -46,43 +47,29 @@ def create_teacher_view(request):
         form = CreateTeacherForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/teachers/')
+            return HttpResponseRedirect(reverse('teachers:list'))
 
-    token = get_token(request)
-    html_form = f'''
-        <form method="post">
-            <input type="hidden" name="csrfmiddlewaretoken" value="{token}">
-            <table>
-                {form.as_table()}
-            </table>
-        <input type="submit" value="Submit"><br><br>
-        <a href="/teachers/"> Back to list</a>
-        </form> 
-        '''
-
-    return HttpResponse(html_form)
+    return render(request, 'teachers/create.html', {'form': form})
 
 
 def update_teacher(request, pk):
-    teacher = Teacher.objects.get(pk=pk)
+    teacher = get_object_or_404(Teacher, pk=pk)
     if request.method == 'GET':
         form = UpdateTeacherForm(instance=teacher)
     elif request.method == 'POST':
         form = UpdateTeacherForm(request.POST, instance=teacher)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/teachers/')
-
-    token = get_token(request)
-    html_form = f'''
-        <form method="post">
-            <input type="hidden" name="csrfmiddlewaretoken" value="{token}">
-            <table>
-                {form.as_table()}
-            </table>
-        <input type="submit" value="Submit"><br><br>
-        <a href="/teachers/">Back to List</a>
-        </form> 
-        '''
+            return HttpResponseRedirect(reverse('teachers:list'))
+    return render(request, 'teachers/update.html', {'form': form})
 
     return HttpResponse(html_form)
+
+
+def delete_teacher(request, pk):
+    st = get_object_or_404(Teacher, pk=pk)
+    if request.method == 'POST':
+        st.delete()
+        return HttpResponseRedirect(reverse('teachers:list'))
+    if request.method == 'GET':
+        return render(request, 'teachers/delete.html', {'teacher': st})

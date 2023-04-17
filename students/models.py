@@ -11,9 +11,9 @@ VALID_DOMAINS = ('gmail.com', 'yahoo.com', 'hotmail.com')
 
 
 class Student(models.Model):
-    first_name = models.CharField(max_length=50, verbose_name='First name', db_column='f.name',
+    first_name = models.CharField(max_length=50, verbose_name='First name', db_column='f_name',
                                   validators=[MinLengthValidator(3)])
-    last_name = models.CharField(max_length=50, verbose_name='Last name', db_column='l.name')
+    last_name = models.CharField(max_length=50, verbose_name='Last name', db_column='l_name')
     # age = models.PositiveIntegerField()
     birthday = models.DateField(default=datetime.date.today())
     city = models.CharField(max_length=30, null=True, blank=True)

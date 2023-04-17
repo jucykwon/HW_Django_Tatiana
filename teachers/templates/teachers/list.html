@@ -1,10 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>LMS - {{ title }}</title>
-</head>
-<body>
+{%  extends 'root_temp.html' %}
+
+{% block title %} List of teachers {% endblock %}
+{% block content %}
    <form method="get">
        <label for="first_name">First name:</label><br>
        <input type="text" id="first_name" name="first_name"><br><br>
@@ -12,8 +9,6 @@
        <input type="text" id="last_name" name="last_name"><br><br>
        <input type="submit" value="Submit">
    </form>
-   <br>
-   <a href="/teachers/create/"> Create teacher</a>
    <br><br>
    <table>
        <thead>
@@ -28,14 +23,14 @@
        <tbody>
             {%  for st in teachers %}
                  <tr>
-                   <td><a href="/teachers/detail/{{ st.pk }}"/>{{st.first_name}}</td>
+                   <td><a href="{% url 'teachers:detail' st.pk %}">{{ st.first_name }} </a></td>
                    <td>{{st.last_name}}</td>
                    <td>{{st.birth_date}}</td>
                    <td>{{st.salary}}</td>
-                   <td><a href="/teachers/update/{{ st.pk }}/">Edit</a></td>
+                   <td><a href="{% url 'teachers:update' st.pk %}">Edit</a></td>
+                   <td><a href="{% url 'teachers:delete' st.pk %}">Remove</a></td>
                  </tr>
             {%  endfor %}
        </tbody>
    </table>
-</body>
-</html>
+{% endblock %}

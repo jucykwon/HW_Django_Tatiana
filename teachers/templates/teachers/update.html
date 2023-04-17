@@ -1,0 +1,10 @@
+{%  extends 'root_temp.html' %}
+
+{% block title %}
+Update teacher '{{ form.first_name.value }}'
+{% endblock %}
+
+{% block content %} 
+    {% include 'update_form.html' %}
+        <a href="{% url 'teachers:list' %}">Back to List</a>
+{% endblock %}

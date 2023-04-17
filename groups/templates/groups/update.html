@@ -1,0 +1,10 @@
+{%  extends 'root_temp.html' %}
+
+{% block title %}
+Update group '{{ form.group_name.value }}'
+{% endblock %}
+
+{% block content %} 
+    {% include 'update_form.html' %}
+        <a href="{% url 'groups:list' %}">Back to List</a>
+{% endblock %}

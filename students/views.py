@@ -1,32 +1,15 @@
 from django.db.models import Q
-# from django.http import HttpRequest
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.middleware.csrf import get_token
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+from django.urls import reverse
 
 from .forms import UpdateStudentForm, CreateStudentForm
 from .models import Student
-# from .utils import format_list_students
 
 from webargs.fields import Str
 from webargs.djangoparser import use_args
-
-
-# Create your views here.
-# HTTPRequest
-# HttpResponse
-
-def view_with_param(request, value):
-    return HttpResponse(f'With param: "{value}"')
-
-
-def view_without_param(request):
-    return HttpResponse('Without param')
-
-
-def index(request):
-    return HttpResponse('Welcome to LMS!')
 
 
 @use_args(
@@ -67,7 +50,8 @@ def get_students(request, args):
 
 
 def detail_student(request, pk):
-    student = Student.objects.get(pk=pk)
+    # student = Student.objects.get(pk=pk)
+    student = get_object_or_404(Student, pk=pk)
     return render(request, 'students/detail.html', {'title': 'Detail of student', 'student': student})
 
 
@@ -79,43 +63,33 @@ def create_student_view(request):
         form = CreateStudentForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/students/')
+            return HttpResponseRedirect(reverse('students:list'))
 
-    token = get_token(request)
-    html_form = f'''
-        <form method="post">
-            <input type="hidden" name="csrfmiddlewaretoken" value="{token}">
-            <table>
-                {form.as_table()}
-            </table>
-        <input type="submit" value="Submit"><br><br>
-        <a href="/students/"> Back to list</a>
-        </form> 
-        '''
+    return render(request, 'students/create.html', {'form': form})
 
     return HttpResponse(html_form)
 
 
 def update_student(request, pk):
-    student = Student.objects.get(pk=pk)
+    # student = Student.objects.get(pk=pk)
+    student = get_object_or_404(Student, pk=pk)
     if request.method == 'GET':
         form = UpdateStudentForm(instance=student)
     elif request.method == 'POST':
         form = UpdateStudentForm(request.POST, instance=student)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/students/')
-
-    token = get_token(request)
-    html_form = f'''
-        <form method="post">
-            <input type="hidden" name="csrfmiddlewaretoken" value="{token}">
-            <table>
-                {form.as_table()}
-            </table>
-        <input type="submit" value="Submit"><br><br>
-        <a href="/students/">Back to List</a>
-        </form> 
-        '''
+            return HttpResponseRedirect(reverse('students:list'))
+    return render(request, 'students/update.html', {'form': form})
 
     return HttpResponse(html_form)
+
+
+def delete_student(request, pk):
+    # st = Student.objects.get(pk=pk)
+    st = get_object_or_404(Student, pk=pk)
+    if request.method == 'POST':
+        st.delete()
+        return HttpResponseRedirect(reverse('list_students'))
+    if request.method == 'GET':
+        return render(request, 'students/delete.html', {'student': st})
