@@ -1,0 +1,16 @@
+{%  extends 'root_temp.html' %}
+
+{% block title %}
+Delete group"{{ group.group_name }}
+{% endblock %}
+
+
+{%  block content %}
+    <form method="post">
+        {%  csrf_token %}
+        <p> Do you really want to remove group <strong> "{{ group.group_name }}"</strong></p>
+        <input type="submit" value="Agree">
+        <br><br>
+        <a href="{%  url 'groups:list' %}">Back to list</a>
+    </form>
+{% endblock %}

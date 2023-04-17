@@ -5,8 +5,8 @@ from faker import Faker
 
 
 class Teacher(models.Model):
-    first_name = models.CharField(max_length=50, verbose_name='First name', db_column='f.name')
-    last_name = models.CharField(max_length=50, verbose_name='Last name', db_column='l.name')
+    first_name = models.CharField(max_length=50, verbose_name='First name', db_column='f_name')
+    last_name = models.CharField(max_length=50, verbose_name='Last name', db_column='l_name')
     birth_date = models.DateField(default=datetime.date.today())
     salary = models.DecimalField(max_digits=8, decimal_places=2)
 
