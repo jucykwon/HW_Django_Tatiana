@@ -9,8 +9,8 @@ Delete group"{{ group.group_name }}
     <form method="post">
         {%  csrf_token %}
         <p> Do you really want to remove group <strong> "{{ group.group_name }}"</strong></p>
-        <input type="submit" value="Agree">
+        <input class="btn btn-outline-danger" type="submit" value="Agree">
         <br><br>
-        <a href="{%  url 'groups:list' %}">Back to list</a>
+        <a href="{%  url 'groups:list' %}" class="btn btn-outline-primary">Back to list</a>
     </form>
 {% endblock %}
