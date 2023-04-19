@@ -6,5 +6,5 @@ Update group '{{ form.group_name.value }}'
 
 {% block content %} 
     {% include 'update_form.html' %}
-        <a href="{% url 'groups:list' %}">Back to List</a>
+        <a href="{% url 'groups:list' %}" class="btn btn-outline-primary">Back to List</a>
 {% endblock %}

@@ -1,37 +1,53 @@
 {%  extends 'root_temp.html' %}
 
 {% block title %} List of groups {% endblock %}
+
+
 {% block content %}
+    <div class="row">
    <form method="get">
-       <label for="group_name">Group name:</label><br>
-       <input type="text" id="group_name" name="group_name"><br><br>
-       <label for="start_date">Start date:</label><br>
-       <input type="date" id="start_date" name="start_date"
-              value="2023-01-01"
-       min="2023-01-01" max="2100-12-31">><br><br>
-       <input type="submit" value="Submit">
+            <div class="form-floating mb-3">
+                  <input type="text" class="form-control" id="floatingGroupName" placeholder="c"
+                         name="group_name">
+                  <label for="floatingGroupName">Group name</label>
+                </div>
+                <div class="form-floating">
+                  <input type="date" class="form-control" id="floatingStartDate" placeholder="2023-01-01"
+                         value="2023-01-01"
+                         min="2023-01-01" max="2100-12-31" name="start_date">
+                  <label for="floatingStartDate">Start date:</label>
+                </div>
+       <br>
+       <input class="btn btn-info mt-3" type="submit" value="Search">
    </form>
-   <br>
-   <br><br>
-   <table>
+    </div>
+     <br>
+    <div class="row">
+   <table class="table table-striped table-hover table-bordered border-primary">
        <thead>
-             <tr>
+             <tr class="text-center">
+                 <th>IN</th>
                  <th>Group Name</th>
                  <th>Start date</th>
                  <th>Group description</th>
                  <th>Update</th>
+                 <th>Delete</th>
              </tr>
        <thead>
        <tbody>
             {%  for st in groups %}
                  <tr>
-                   <td><a href="{% url 'groups:detail' st.pk %}">{{ st.group_name }}</a></td>
-                   <td>{{st.start_date}}</td>
+                   <td class="text-center">{{ forloop.counter }}</td>
+                   <td class="text-center"><a href="{% url 'groups:detail' st.pk %}">{{ st.group_name }}</a></td>
+                   <td class="text-center">{{st.start_date|date:"d M Y"}}</td>
                    <td>{{st.group_description}}</td>
-                   <td><a href="{% url 'groups:update' st.pk %}">Edit</a></td>
-                   <td><a href="{% url 'groups:delete' st.pk %}">Remove</a></td>
+                   <td><a class="btn btn-outline-success btn-sm d-grid gap-2" href="{% url 'groups:update' st.pk %}">
+                       Edit</a></td>
+                   <td><a class="btn btn-outline-danger btn-sm d-grid gap-2" href="{% url 'groups:delete' st.pk %}">
+                       Remove</a></td>
                  </tr>
             {%  endfor %}
        </tbody>
    </table>
+    </div>
 {% endblock %}

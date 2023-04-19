@@ -6,5 +6,5 @@ Update student '{{ form.first_name.value }}'
 
 {% block content %} 
     {% include 'update_form.html' %}
-        <a href="{% url 'students:list' %}">Back to List</a>
+        <a href="{% url 'students:list' %}" class="btn btn-outline-primary">Back to List</a>
 {% endblock %}

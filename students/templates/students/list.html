@@ -1,41 +1,92 @@
 {%  extends 'root_temp.html' %}
 
 {% block title %} List of students {% endblock %}
+
+{% block custom_css %}
+     #list {
+          font-family: arial, sans-serif;
+          width: 100%;
+          border-collapse: collapse;
+    }
+     #list td {
+          text-align: center;
+          border: 1px solid #470297;
+          padding: 8px;
+    }
+    #col-edit, #col-del, #col-age, #col-birth {
+          text-align: center;
+          width: 120px;
+    }
+    #list tr:nth-child(even) {
+          background-color: #7cacbe;
+    }
+{% endblock %}
+
 {% block content %}
-   <form method="get">
-       <label for="first_name">First name:</label><br>
-       <input type="text" id="first_name" name="first_name"><br><br>
-       <label for="last_name">Last name:</label><br>
-       <input type="text" id="last_name" name="last_name"><br><br>
-       <input type="submit" value="Submit">
-   </form>
-   <br><br>
-   <table>
+      <div class="row">
+           <div class="col-3"></div>
+           <div class="col">
+          <form method="get">
+                <div class="form-floating mb-3">
+                  <input type="text" class="form-control" id="floatingFirstName" placeholder="FirstName" name="first_name">
+                  <label for="floatingFirstName">First name</label>
+                </div>
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="floatingLastName" placeholder="LastName"
+                         name="last_name">
+                  <label for="floatingLastName">Last name</label>
+                </div>
+{#                <label for="first_name">First name:</label><br>#}
+{#                <input type="text" id="first_name" name="first_name"><br><br>#}
+{#                <label for="last_name">Last name:</label><br>#}
+{#                <input type="text" id="last_name" name="last_name"><br><br>#}
+                <input class="btn btn-info mt-3" type="submit" value="Search">
+          </form>
+           </div>
+         <div class="col-3"></div>
+      </div>
+    <br>
+    <div class="row">
+    <table class="table table-striped table-hover table-bordered border-primary">
        <thead>
-             <tr>
+             <tr class="text-center">
+                 <th>IN</th>
                  <th>First Name</th>
                  <th>Last Name</th>
-                  <th>Email</th>
-                 {# <th>Birthday</th>#}
+                 <th>Email</th>
+                 <th>Birthday</th>
+                 <th>Age</th>
                  <th>Phone number</th>
                  {# <th>City</th>#}
-                 <th>Update</th>
-                 <th>Delete</th>
+                 <th><i class="bi bi-arrow-repeat" style="font-size: 30px; color: rgb(128, 0, 128);"></i></th>
+                 <th><i class="bi bi-dash-circle-fill" style="font-size: 30px; color: rgb(128, 0, 128);" align-center></i></th>
              </tr>
        <thead>
        <tbody>
             {%  for st in students %}
                  <tr>
-                     <td><a href="{% url 'students:detail' st.pk %}">{{ st.first_name }} </a></td>
-                   <td>{{st.last_name}}</td>
-                   <td>{{st.email}}</td>
-                   {# <td>{{st.birthday}}</td>#}
-                   <td>{{st.phone}}</td>
+                   <td class="text-center">{{ forloop.counter }}</td>
+                   <td class="text-center"><a href="{% url 'students:detail' st.pk %}">{{ st.first_name }} </a></td>
+                   <td class="text-center">{{st.last_name}}</td>
+                   <td class="text-center">{{st.email}}</td>
+                   <td class="text-center" id="col-birth">{{st.birthday|date:"d M Y"}}</td>
                    {# <td>{% if st.city %}{{ st.city }}{% endif %}</td>#}
-                   <td><a href="{% url 'students:update' st.pk %}">Edit</a></td>
-                   <td><a href="{% url 'students:delete' st.pk %}">Remove</a></td>
+{#                   <td>{% if st.get_age %}{{ st.get_age }}{% endif %}</td>#}
+                   <td class="text-center">{% if st.get_age %}{{ st.get_age }}{% endif %}</td>
+                   <td class="text-center" id="col-age">{{st.phone}}</td>
+{#                    <td id="col-edit">#}
+{#                       <a href="{% url 'students:update' st.pk %}" class="btn btn-outline-success d-grid gap-2">#}
+{#                           Edit</a></td> #}
+{#                   <td id="col-del">#}
+{#                       <a href="{% url 'students:delete' st.pk %}" class="btn btn-outline-danger d-grid gap-2">#}
+{#                           Remove</a></td> #}
+                   <td class="text-center" id="col-edit"><a class="btn btn-outline-success btn-sm d-grid gap-2"
+                                                            href="{% url 'students:update' st.pk %}">Edit</a></td>
+                   <td class="text-center" id="col-del"><a class="btn btn-outline-danger d-grid gap-2"
+                                                            href="{% url 'students:delete' st.pk %}">Remove</a></td>
                  </tr>
             {%  endfor %}
        </tbody>
    </table>
+    </div>
 {% endblock %}

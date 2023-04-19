@@ -7,7 +7,7 @@
    <p style="color:red;">Birthday:</p> <p>{{ teacher.birth_date }}</p>
    <p style="color:red;">Salary:</p> <p>{{ teacher.salary }}</p>
    <br>
-   <a href="{% url 'teachers:update' teacher.pk %}"> Edit</a>
+   <a href="{% url 'teachers:update' teacher.pk %}" class="btn btn-outline-primary"> Edit</a>
    <br><br>
-   <a href="{%  url 'teachers:list' %}"> Back to list</a>
+   <a href="{%  url 'teachers:list' %}" class="btn btn-outline-secondary"> Back to list</a>
 {% endblock %}
