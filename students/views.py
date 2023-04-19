@@ -90,6 +90,6 @@ def delete_student(request, pk):
     st = get_object_or_404(Student, pk=pk)
     if request.method == 'POST':
         st.delete()
-        return HttpResponseRedirect(reverse('list_students'))
+        return HttpResponseRedirect(reverse('students:list'))
     if request.method == 'GET':
         return render(request, 'students/delete.html', {'student': st})
