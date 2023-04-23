@@ -1,10 +1,9 @@
-from django.db.models import Q
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 
-from .forms import UpdateGroupForm, CreateGroupForm
+from .forms import UpdateGroupForm, CreateGroupForm, FilterGroupForm
 from .models import Group
 
 from webargs.fields import Str
@@ -24,14 +23,13 @@ def index(request):
 )
 def get_groups(request, args):
     groups = Group.objects.all().order_by('group_name')
-    if len(args) and (args.get('group_name') or args.get('start_date')):
-        groups = groups.filter(
-            Q(group_name=args.get('group_name', '')) | Q(start_date=args.get('start_date', ''))
-        )
+    filter_form = FilterGroupForm(data=request.GET, queryset=groups)
     return render(
         request=request,
         template_name='groups/list.html',
-        context={'title': 'List of groups', 'groups': groups}
+        context={
+            'filter_form': filter_form,
+        }
     )
 
 
@@ -72,3 +70,5 @@ def delete_group(request, pk):
         return HttpResponseRedirect(reverse('groups:list'))
     if request.method == 'GET':
         return render(request, 'groups/delete.html', {'group': st})
+
+

@@ -1,10 +1,23 @@
 {%  extends 'root_temp.html' %}
+{% load crispy_forms_filters %}
 
 {% block title %}
 Update teacher '{{ form.first_name.value }}'
 {% endblock %}
 
-{% block content %} 
-    {% include 'update_form.html' %}
-        <a href="{% url 'teachers:list' %}" class="btn btn-outline-primary">Back to List</a>
+{% block content %}
+        <div class="row">
+           <div class="col-3"></div>
+           <div class="col">
+              <form method="post">
+                 {% csrf_token %}
+                 {{  form|crispy }}
+                <div class="text-center">
+               <input class="btn btn-success" type="submit" value="Update">
+               <a href="{% url 'teachers:list' %}" class="btn btn-outline-primary text-left"> Back to list</a>
+               <div class="col-3"></div>
+               </div>
+        </form>
+           </div>
+
 {% endblock %}

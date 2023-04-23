@@ -1,15 +1,26 @@
 {% extends 'root_temp.html'%}
 {% block title %}{{ title }}{% endblock %}
 
-{% block content %}
-    <p style="color:blue;">First name:</p> <p>{{ student.first_name }}</p>
-   <p style="color:blue;"> Last name:</p> <p>{{ student.last_name }}</p>
-   <p style="color:blue;">Email:</p> <p>{{ student.email }}</p>
-   <p style="color:blue;">Phone number:</p> <p>{{ student.phone }}</p>
-   <p style="color:blue;">Birthday:</p> <p>{{ student.birthday }}</p>
-   <p style="color:blue;">City:</p> <p> {% if student.city %}{{ student.city }}{% endif %}</p>
-   <br>
-   <a href="{% url 'students:update' student.pk %}" class="btn btn-outline-primary"> Edit</a>
-   <br><br>
-   <a href="{%  url 'students:list' %}" class="btn btn-outline-secondary"> Back to list</a>
+{%  block content %}
+    <div class="row">
+    <div class="col"></div>
+    <div class="col align-self-center">
+        <div class="card" style="width: 20rem">
+            <div class="card-body">
+            <h5 class="card-title bg-info">{{ student.last_name }} {{ student.first_name }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted"><ins><strong>{{ student.email }}</strong></ins></h6>
+            <ul>
+            <li><p class="card-text">Birthday: {{ student.birthday|date:"d M Y" }} / {{ student.get_age }} year(s)</p></li>
+            <li><p class="card-text">Telephone: {{ student.phone }}</p></li>
+            <li>{% if student.city %}<p class="card-text">City: {{ student.city }}</p>{% endif %}</li>
+            </ul>
+                <div class="text-center">
+                    <a href="{% url 'students:update' student.pk %}" class="btn btn-outline-primary"> Edit</a>
+                    <a href="{%  url 'students:list' %}" class="btn btn-outline-secondary"> Back to list</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col"></div>
+    </div>
 {% endblock %}

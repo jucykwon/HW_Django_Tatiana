@@ -1,16 +1,25 @@
-{%  extends 'root_temp.html' %}
+{% extends 'root_temp.html' %}
 
 {% block title %}
-Delete group"{{ group.group_name }}
+    Delete group"{{ group.group_name }}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-3"></div>
+        <div class="col">
+            <form method="post">
+                {% csrf_token %}
+                <div class="text-center">
+                    <p> Do you really want to remove group <strong> "{{ group.group_name }}"
+                    </strong></p>
+                    <input class="btn btn-outline-danger" type="submit" value="Agree">
+                    <a href="{% url 'groups:list' %}" class="btn btn-outline-primary"> Back to list</a>
+                </div>
+            </form>
+        </div>
+        <div class="col-3"></div>
+    </div>
 {% endblock %}
 
 
-{%  block content %}
-    <form method="post">
-        {%  csrf_token %}
-        <p> Do you really want to remove group <strong> "{{ group.group_name }}"</strong></p>
-        <input class="btn btn-outline-danger" type="submit" value="Agree">
-        <br><br>
-        <a href="{%  url 'groups:list' %}" class="btn btn-outline-primary">Back to list</a>
-    </form>
-{% endblock %}

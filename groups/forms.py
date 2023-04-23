@@ -1,4 +1,5 @@
 from django import forms
+from django_filters import FilterSet, RangeFilter
 
 from groups.models import Group
 import string
@@ -51,3 +52,12 @@ class UpdateGroupForm(forms.ModelForm):
         final_text = '. '.join(final_sentences)
         final_text = final_text + '.'
         return final_text
+
+
+class FilterGroupForm(FilterSet):
+    class Meta:
+        model = Group
+        fields = {
+            'group_name': ['exact', 'icontains'],
+            'start_date': ['exact', 'gte', 'lte']
+        }

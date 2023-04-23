@@ -1,5 +1,6 @@
 from django import forms
-
+from django_filters import FilterSet, filters
+from django.db.models import Q
 from students.models import Student
 
 
@@ -58,3 +59,13 @@ class UpdateStudentForm(forms.ModelForm):
         else:
             raise forms.ValidationError("Invalid phone number")
         return student_phone
+
+
+class FilterStudentForm(FilterSet):
+
+    class Meta:
+        model = Student
+        fields = {
+            'first_name': ['exact', 'icontains'],
+            'last_name': ['exact', 'startswith']
+        }
