@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 
+from students.models import Student
 from .forms import UpdateGroupForm, CreateGroupForm, FilterGroupForm
 from .models import Group
 
@@ -51,16 +52,15 @@ def create_group_view(request):
 
 def update_group(request, pk):
     group = get_object_or_404(Group, pk=pk)
-    if request.method == 'GET':
-        form = UpdateGroupForm(instance=group)
-    elif request.method == 'POST':
-        form = UpdateGroupForm(request.POST, instance=group)
+    students = {'students': Student.objects.filter(group=group)}
+    if request.method == 'POST':
+        form = UpdateGroupForm(data=request.POST, instance=group, initial=students)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('groups:list'))
-    return render(request, 'groups/update.html', {'form': form})
 
-    return HttpResponse(html_form)
+    form = UpdateGroupForm(instance=group, initial=students)
+    return render(request, 'groups/update.html', {'form': form, 'group': group})
 
 
 def delete_group(request, pk):
@@ -70,5 +70,3 @@ def delete_group(request, pk):
         return HttpResponseRedirect(reverse('groups:list'))
     if request.method == 'GET':
         return render(request, 'groups/delete.html', {'group': st})
-
-

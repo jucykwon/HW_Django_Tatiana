@@ -1,25 +1,32 @@
-{% extends 'root_temp.html'%}
+{% extends 'root_temp.html' %}
 {% block title %}{{ title }}{% endblock %}
 
-{%  block content %}
+{% block content %}
     <div class="row">
-    <div class="col"></div>
-    <div class="col align-self-center">
-        <div class="card" style="width: 20rem">
-            <div class="card-body">
-            <h5 class="card-title bg-info">{{ group.group_name }}</h5>
-            <h6 class="card-subtitle mb-2 text-muted"><ins><strong>{{ group.start_date|date:"d M Y" }}
-            </strong></ins></h6>
-            <ul>
-            <li><p class="card-text">{{ group.group_description }}</p></li>
-            </ul>
-                <div class="text-center">
-                    <a href="{% url 'groups:update' group.pk  %}" class="btn btn-outline-primary"> Edit</a>
-                    <a href="{%  url 'groups:list' %}" class="btn btn-outline-secondary"> Back to list</a>
+        <div class="col"></div>
+        <div class="col align-self-center">
+            <div class="card" style="width: 20rem">
+                <div class="card-body">
+                    <h5 class="card-title bg-info">{{ group.group_name }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        <ins><strong>Start date: {{ group.start_date|date:"d M Y" }}
+                        </strong></ins>
+                    </h6>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        <ins><strong>End date: {{ group.end_date|date:"d M Y" }}
+                        </strong></ins>
+                    </h6>
+                    <ul>
+                        <li><p class="card-text">Headman: {{ group.headman }}</p></li>
+                        <li><p class="card-text">{{ group.group_description }}</p></li>
+                    </ul>
+                    <div class="text-center">
+                        <a href="{% url 'groups:update' group.pk %}" class="btn btn-outline-primary"> Edit</a>
+                        <a href="{% url 'groups:list' %}" class="btn btn-outline-secondary"> Back to list</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="col"></div>
+        <div class="col"></div>
     </div>
 {% endblock %}

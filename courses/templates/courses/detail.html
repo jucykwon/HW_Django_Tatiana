@@ -1,0 +1,25 @@
+{% extends 'root_temp.html'%}
+{% block title %}{{ title }}{% endblock %}
+
+{%  block content %}
+    <div class="row">
+    <div class="col"></div>
+    <div class="col align-self-center">
+        <div class="card" style="width: 20rem">
+            <div class="card-body">
+            <h5 class="card-title bg-info">{{ course.course_name }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted"><ins><strong>{{ course.start_date|date:"d M Y" }}
+            </strong></ins></h6>
+            <ul>
+            <li><p class="card-text">{{ course.course_description }}</p></li>
+            </ul>
+                <div class="text-center">
+                    <a href="{% url 'courses:update' course.pk  %}" class="btn btn-outline-primary"> Edit</a>
+                    <a href="{%  url 'courses:list' %}" class="btn btn-outline-secondary"> Back to list</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col"></div>
+    </div>
+{% endblock %}
