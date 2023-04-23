@@ -21,6 +21,7 @@ def format_list_students(students):
                   f'<td>{st.birthday}</td>' \
                   f'<td>{st.phone}</td>' \
                   f'<td>{st.city if st.city else ""}</td>' \
+                  f'<td>{st.group}</td>' \
                   f'<td><a href="/students/update/{st.pk}"/>Edit</a></td>' \
                   f'</tr>'
     string += '</tbody></table>'

@@ -1,16 +1,21 @@
 {%  extends 'root_temp.html' %}
-
+{% load crispy_forms_filters %}
 {% block title %}
 Create new student
 {% endblock %}
 
 {% block content %}
-{#    <form method="post">#}
-{#        {% csrf_token %}#}
-{#        <table>#}
-{#            {{ form.as_table }}#}
-{#        </table>#}
-{#        <input type="submit" value="Create"><br><br>#}
-    {% include 'create_form.html' %}
-        <a href="{% url 'students:list' %}" class="btn btn-outline-primary"> Back to list</a>
+        <div class="row">
+           <div class="col-3"></div>
+           <div class="col">
+              <form method="post">
+                 {% csrf_token %}
+                 {{  form|crispy }}
+                <div class="text-center">
+               <input class="btn btn-success" type="submit" value="Create">
+               <a href="{% url 'students:list' %}" class="btn btn-outline-primary text-left"> Back to list</a>
+               <div class="col-3"></div>
+               </div>
+        </form>
+           </div>
 {% endblock %}

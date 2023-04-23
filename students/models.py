@@ -1,26 +1,28 @@
 import datetime
-
 from dateutil.relativedelta import relativedelta
 from django.core.validators import MinLengthValidator
 from django.db import models
 from faker import Faker
-from phone_field import PhoneField
+from faker.generator import random
 
-# from students.validators import ValidateEmailDomains, validate_unique_email
+from groups.models import Group
+from students.validators import ValidateEmailDomains, validate_unique_email
 
 VALID_DOMAINS = ('gmail.com', 'yahoo.com', 'hotmail.com')
 
 
 class Student(models.Model):
     first_name = models.CharField(max_length=50, verbose_name='First name', db_column='f_name',
-                                  validators=[MinLengthValidator(3)])
-    last_name = models.CharField(max_length=50, verbose_name='Last name', db_column='l_name')
-    # age = models.PositiveIntegerField()
-    birthday = models.DateField(default=datetime.date.today())
+                                  validators=[MinLengthValidator(3, message='"First name" field value less than 2 '
+                                                                            'symbols')])
+    last_name = models.CharField(max_length=50, verbose_name='Last name', db_column='l_name',
+                                 validators=[MinLengthValidator(3, message='"Last name" field value less than 2 '
+                                                                           'symbols')])
+    birthday = models.DateField(default=datetime.date.today(), blank=True)
     city = models.CharField(max_length=30, null=True, blank=True)
-    # email = models.EmailField(validators=[ValidateEmailDomains(*VALID_DOMAINS), validate_unique_email])
-    email = models.EmailField()
-    phone = models.CharField(max_length=20, default=None)
+    email = models.EmailField(validators=[ValidateEmailDomains(*VALID_DOMAINS), validate_unique_email])
+    phone = models.CharField(max_length=13, default=None)
+    group = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True, related_name='students')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -35,14 +37,15 @@ class Student(models.Model):
 
     @classmethod
     def generate_fake_data(cls, cnt):
-        f = Faker()
+        f = Faker('uk_UA')
+        provider = f.phone_number
         for _ in range(cnt):
             s = cls()  # s = Student
             s.first_name = f.first_name()
             s.last_name = f.last_name()
             s.email = f'{s.first_name}.{s.last_name}@{f.random.choice(VALID_DOMAINS)}'
-            s.birthday = f.date_between(start_date='-65y', end_date='-18y')
-            # s.age = f.random_int(min=18, max=65)
+            s.birthday = f.date_between(start_date='-35y', end_date='-18y')
             s.city = f.city()
-            s.phone = f.phone_number()
+            s.phone = provider()
+            s.group = random.choice(Group.objects.all())
             s.save()

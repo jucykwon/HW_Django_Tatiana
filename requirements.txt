@@ -47,3 +47,7 @@ stack-data==0.6.2
 traitlets==5.9.0
 wcwidth==0.2.6
 webargs==8.2.0
+
+iso639~=0.1.4
+django-filter~=23.1
+django-debug-toolbar~=4.0.0

@@ -1,4 +1,5 @@
 from django import forms
+from django_filters import FilterSet
 
 from teachers.models import Teacher
 
@@ -42,3 +43,12 @@ class UpdateTeacherForm(forms.ModelForm):
     def clean_last_name(self):
         value = self.cleaned_data.get('last_name')
         return value.capitalize()
+
+
+class FilterTeacherForm(FilterSet):
+    class Meta:
+        model = Teacher
+        fields = {
+            'first_name': ['exact', 'icontains'],
+            'last_name': ['exact', 'startswith']
+        }
