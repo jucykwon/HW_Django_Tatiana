@@ -1,7 +1,6 @@
 import datetime
 from django.db import models
 from faker import Faker
-import iso639
 
 from groups.validators import validate_start_date
 
@@ -13,9 +12,13 @@ class Group(models.Model):
         db_column='g.name'
     )
     start_date = models.DateField(default=datetime.date.today(), validators=[validate_start_date])
+    end_date = models.DateField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     group_description = models.TextField()
+    headman = models.OneToOneField('students.Student', on_delete=models.SET_NULL, null=True, blank=True,
+                                   related_name='headman_group')
+    teachers = models.ManyToManyField('teachers.Teacher', blank=True, related_name='groups')
 
     class Meta:
         db_table = 'Oxford'
@@ -37,5 +40,6 @@ class Group(models.Model):
             g = cls()
             g.group_name = name
             g.start_date = f.date_this_year()
+            g.end_date = g.start_date + datetime.timedelta(days=60)
             g.group_description = f.text()
             g.save()

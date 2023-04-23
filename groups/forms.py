@@ -1,39 +1,54 @@
 from django import forms
-from django_filters import FilterSet, RangeFilter
+from django_filters import FilterSet
 
 from groups.models import Group
-import string
+from students.models import Student
 
 
-class CreateGroupForm(forms.ModelForm):
+class StudentInGroup(forms.ModelForm):
+    students = forms.ModelMultipleChoiceField(queryset=None, required=False)
+
+    def save(self, commit=True):
+        new_group = super().save(commit)
+        students = self.cleaned_data['students']
+        for student in students:
+            student.group = new_group
+            student.save()
+
     class Meta:
         model = Group
-        fields = [
-            'group_name',
-            'start_date',
-            'group_description',
-
-        ]
+        fields = '__all__'
+        # [
+        #     'group_name',
+        #     'start_date',
+        #     'group_description',
+        #
+        #
+        # ]
 
         widgets = {
-            'start_date': forms.DateInput(attrs={'type': 'date'})
+            'start_date': forms.DateInput(attrs={'type': 'date'}),
+            'end_date': forms.DateInput(attrs={'type': 'date'})
 
         }
 
 
-class UpdateGroupForm(forms.ModelForm):
-    class Meta:
-        model = Group
-        fields = [
-            'group_name',
-            'start_date',
-            'group_description',
-        ]
+class CreateGroupForm(StudentInGroup):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['students'].queryset = Student.objects.filter(group__isnull=True)
 
-        widgets = {
-            'start_date': forms.DateInput(attrs={'type': 'date'})
+    class Meta(StudentInGroup.Meta):
+        pass
 
-        }
+
+class UpdateGroupForm(StudentInGroup):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['students'].queryset = Student.objects.all()
+
+    class Meta(StudentInGroup.Meta):
+        pass
 
     def clean_group_name(self):
         value = self.cleaned_data.get('group_name')
@@ -59,5 +74,6 @@ class FilterGroupForm(FilterSet):
         model = Group
         fields = {
             'group_name': ['exact', 'icontains'],
-            'start_date': ['exact', 'gte', 'lte']
+            'start_date': ['exact', 'gte', 'lte'],
+            'end_date': ['exact', 'gte', 'lte']
         }

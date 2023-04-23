@@ -1,6 +1,6 @@
 {% extends 'root_temp.html' %}
 {% load crispy_forms_filters %}
-{% block title %} List of groups {% endblock %}
+{% block title %} List of courses {% endblock %}
 
 {% block content %}
     <br>
@@ -36,11 +36,12 @@
                     <thead>
                     <tr class="text-center">
                         <th>IN</th>
-                        <th>Group Name</th>
+                        <th>Course Name</th>
                         <th>Start date</th>
                         <th>End date</th>
-                        <th>Group description</th>
-                        <th>Headman</th>
+                        <th>Course description</th>
+                        <th>Is Active</th>
+                        <th>Croup</th>
                         <th><i class="bi bi-arrow-repeat" style="font-size: 30px; color: rgb(128, 0, 128);"></i></th>
                         <th><i class="bi bi-dash-circle-fill" style="font-size: 30px; color: rgb(128, 0, 128);"
                                align-center></i></th>
@@ -50,17 +51,18 @@
                     {% for st in filter_form.qs %}
                         <tr>
                             <td class="text-center">{{ forloop.counter }}</td>
-                            <td class="text-center"><a href="{% url 'groups:detail' st.pk %}">{{ st.group_name }} </a>
+                            <td class="text-center"><a href="{% url 'courses:detail' st.pk %}">{{ st.course_name }} </a>
                             </td>
                             <td class="text-center">{{ st.start_date }}</td>
                             <td class="text-center">{%  if st.end_date %}{{ st.end_date }}{% endif %}</td>
-                            <td class="text-center">{{ st.group_description }}</td>
-                            <td class="text-center">{% if st.headman %}{{ st.headman.last_name }}{% endif %}</td>
+                            <td class="text-center">{{ st.course_description }}</td>
+                            <td class="text-center">{% if st.is_active %}{{ st.is_active }}{% endif %}</td>
+                            <td class="text-center">{% if st.group %}{{ st.group }}{% endif %}</td>
                             <td class="text-center" id="col-edit"><a class="btn btn-outline-success btn-sm d-grid gap-2"
-                                                                     href="{% url 'groups:update' st.pk %}">Edit</a>
+                                                                     href="{% url 'courses:update' st.pk %}">Edit</a>
                             </td>
                             <td class="text-center" id="col-del"><a class="btn btn-outline-danger d-grid gap-2"
-                                                                    href="{% url 'groups:delete' st.pk %}">Remove</a>
+                                                                    href="{% url 'courses:delete' st.pk %}">Remove</a>
                             </td>
                         </tr>
                     {% endfor %}

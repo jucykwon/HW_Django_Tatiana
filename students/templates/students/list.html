@@ -32,41 +32,8 @@
         </div>
         <br>
         <div class="row">
-            <table class="table table-striped table-hover table-bordered border-primary">
-                <thead>
-                <tr class="text-center">
-                    <th>IN</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Email</th>
-                    <th>Birthday</th>
-                    <th>Age</th>
-                    <th>Phone number</th>
-                    <th>Group</th>
-                    <th><i class="bi bi-arrow-repeat" style="font-size: 30px; color: rgb(128, 0, 128);"></i></th>
-                    <th><i class="bi bi-dash-circle-fill" style="font-size: 30px; color: rgb(128, 0, 128);"
-                           align-center></i></th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for st in filter_form.qs %}
-                    <tr>
-                        <td class="text-center">{{ forloop.counter }}</td>
-                        <td class="text-center"><a href="{% url 'students:detail' st.pk %}">{{ st.first_name }} </a>
-                        </td>
-                        <td class="text-center">{{ st.last_name }}</td>
-                        <td class="text-center">{{ st.email }}</td>
-                        <td class="text-center" id="col-birth">{{ st.birthday|date:"d M Y" }}</td>
-                        <td class="text-center">{% if st.get_age %}{{ st.get_age }}{% endif %}</td>
-                        <td class="text-center" id="col-age">{{ st.phone }}</td>
-                        <td class="text-center" id="col-age">{% if st.group %}{{ st.group }}{% endif %}</td>
-                        <td class="text-center" id="col-edit"><a class="btn btn-outline-success btn-sm d-grid gap-2"
-                                                                 href="{% url 'students:update' st.pk %}">Edit</a></td>
-                        <td class="text-center" id="col-del"><a class="btn btn-outline-danger d-grid gap-2"
-                                                                href="{% url 'students:delete' st.pk %}">Remove</a></td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+            {%  with object_list=filter_form.qs is_group=False %}
+            {%  include 'includes/students_table.html' %}
+            {% endwith %}
         </div>
 {% endblock %}
