@@ -19,6 +19,8 @@ class Group(models.Model):
     headman = models.OneToOneField('students.Student', on_delete=models.SET_NULL, null=True, blank=True,
                                    related_name='headman_group')
     teachers = models.ManyToManyField('teachers.Teacher', blank=True, related_name='groups')
+    active_course = models.OneToOneField('courses.Course', on_delete=models.SET_NULL, null=True, blank=True,
+                                         related_name='course_group')
 
     class Meta:
         db_table = 'Oxford'
